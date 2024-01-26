@@ -7,6 +7,8 @@ import (
 	"strconv"
 )
 
+
+// Sums all the numbers in a given slice
 func sum(data []float64) float64 {
 	sum := 0.0
 
@@ -16,7 +18,12 @@ func sum(data []float64) float64 {
 	return sum
 }
 
+
+// Uses sum to calculate the mean of a given slice
 func mean(data []float64) float64 {
 	return sum(data) / float64(len(data))
 }
+
+// use this type for generic statistical functions
+type statsFunc func(data []float64) float64
 
