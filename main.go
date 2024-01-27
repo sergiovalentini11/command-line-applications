@@ -45,6 +45,31 @@ func run(filesnames []string, op string, column int, out io.Writer) error {
 		return fmt.Errorf("%w: %s", ErrInvalidOperation, op)
 	}
 
+	consolidate := make([]float64, 0)
 
+	// Loop thru the provided files and store data in consolidate
+	for _, fname := range filenames {
+		
+		// Open the file
+		f, err := os.Open(fname)
+		if err != nil {
+			return fmt.Errorf("Cannot open file: %w", err)
+		}
 
+		// Parse the file and store the floats in a slice 
+		data, err := csv2float(f, column)
+		if err != nil {
+			return err
+		}
+
+		if err := f.Close(); err != nil {
+			return err
+		}
+
+		// Append the data to consolidate
+		consolidate = append(consolidate, data...)
+	}
+
+	_, err := fmt.Fprintln(out, opFunc(consolidate))
+	return err
 }
